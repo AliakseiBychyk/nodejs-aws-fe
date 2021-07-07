@@ -14,6 +14,9 @@ type CSVFileImportProps = {
   title: string
 };
 
+localStorage.setItem('AliakseiBychyk', 'orangeAndPurple');
+console.log('process.env', process.env);
+
 export default function CSVFileImport({url, title}: CSVFileImportProps) {
   const classes = useStyles();
   const [file, setFile] = useState<any>();
@@ -30,9 +33,14 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
   };
 
   const uploadFile = async (e: any) => {
+    const password = localStorage.getItem('AliakseiBychyk');
+    const token = btoa(`AliakseiBychyk:${password}`);
     // Get the presigned URL
     const response = await axios({
       method: 'GET',
+      headers: {
+        Authorization: `Basic ${token}`
+      },
       url,
       params: {
         name: encodeURIComponent(file.name)
